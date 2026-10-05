@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const books = JSON.parse(fs.readFileSync(`${__dirname}/../data/books.json`));
+let books = JSON.parse(fs.readFileSync(`${__dirname}/../data/books.json`));
 
 const respondJSON = (request, response, object, statusCode = 200) => {
   const content = JSON.stringify(object);
@@ -58,6 +58,58 @@ const addBook = (request, response) => {
 
   respondJSON(request, response, responseJSON, 201);
 }
+
+const editBook = (request, response) => {
+  const title = request.body.title || null;
+  const author = request.body.author || null;
+  const country = request.body.country || null;
+  const language = request.body.language || null;
+  const link = request.body.link || null;
+  const pages = request.body.pages || null;
+  const year = request.body.year || null;
+  const genres = request.body.genres || null;
+
+  if (title == null) {
+    const responseJSON = {
+      id: "missingParams",
+      message: "title is required for the editBook method"
+    };
+
+    return respondJSON(request, response, responseJSON, 400);
+  }
+
+  let didFindBook = false;
+  books = books.map(book => {
+    if (book.title == title) {
+      didFindBook = true;
+      if (author) book.author = author;
+      if (country) book.country = country;
+      if (language) book.language = language;
+      if (link) book.link = link;
+      if (pages) book.pages = pages;
+      if (year) book.year = year;
+      if (genres) book.genres = genres;
+    }
+  })
+
+  if (!didFindBook) {
+    const responseJSON = {
+      id: "bookNotFound",
+      message: "A book with this title could not be found"
+    }
+
+    return respondJSON(request, response, responseJSON, 404);
+  }
+  
+  // if (userName in users) {
+  //   users[userName].age = userAge;
+  //   return respondJSON(request, response, {}, 204);
+  // }
+
+  respondJSON(request, response, {}, 204);
+}
+
+
 
 const getAuthors = (request, response) => {
   const responseJSON = {
@@ -162,5 +214,6 @@ module.exports = {
   getBook,
   getSearch,
   addBook,
+  editBook,
   respond404
 }

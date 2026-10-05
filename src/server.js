@@ -12,6 +12,7 @@ const urlStruct = {
   "/book": apiHandler.getBook,
   "/search": apiHandler.getSearch,
   "/addBook": apiHandler.addBook,
+  "/editBook": apiHandler.editBook,
   default: apiHandler.respond404
 };
 
