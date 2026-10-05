@@ -13,7 +13,7 @@
   "license": "ISC",
   "author": "mint",
   "type": "commonjs",
-  "main": "eslint.config.js",
+  "main": "./src/server.js",
   "scripts": {
     "start": "node ./src/server.js",
     "pretest": "eslint ./src --fix",
